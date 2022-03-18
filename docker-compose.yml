@@ -14,6 +14,15 @@ services:
   redis2:
     image: redis
 
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
   application:
     build:
       context: .
@@ -26,9 +35,9 @@ services:
       - DATABASE_HOST=db
       - DATABASE_USER=postgres
       - DATABASE_NAME=postgres
-      - DATABASE_PASSWORD=postgres
+      - DATABASE_PASSWORD=password
       - WEBROOT=http://didcomm.server.com
-      - SEED=000000000000000000000000000RELAY
+      - SEED=9aXH5b8tZEUyuMJUCvF6ZTYJSkjCa9kc
       - LOGLEVEL=DEBUG
       - FCM_API_KEY=fake-key
       - FCM_SENDER_ID=fake-id
@@ -41,7 +50,7 @@ services:
       - "80:80"
       - "443:443"
     depends_on:
-      - db
+      - postgres
       - memcached
       - redis1
       - redis2
